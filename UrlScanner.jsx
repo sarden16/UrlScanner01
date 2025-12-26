@@ -4,6 +4,7 @@ import { fetchScan } from './n8nClient.js';
 import { normalizeScanResponse } from './parsers.js';
 import { loadHistory, addToHistory, clearHistory, removeHistoryItem } from './storage.js';
 import { parseWhoisData } from './whoisUtils.js';
+import { decideVerdict } from './verdict.js';
 
 function isValidUrl(value) {
   try {
@@ -101,48 +102,10 @@ function UrlScanner() {
       }
 
       const data = await fetchScan(normalizedUrl);
-      const normalized = normalizeScanResponse(data);
+      let normalized = normalizeScanResponse(data);
 
-      // Check for young domains (<= 6 months) to flag as suspicious if otherwise clean
-      if (Array.isArray(normalized)) {
-        normalized.forEach(cat => {
-          if (cat.verdict === 'CLEAN') {
-            const hasYoungDomain = cat.results?.some(r => {
-              if (!r.whois) return false;
-              const w = parseWhoisData(r.whois);
-              // 0.5 years is approx 6 months
-              return w && w.dates.age !== null && w.dates.age <= 0.5;
-            });
-
-            if (hasYoungDomain) {
-              cat.verdict = 'SUSPICIOUS';
-              if (!Array.isArray(cat.detections)) cat.detections = [];
-              cat.detections.push({
-                engine: 'Heuristics',
-                result: 'Suspicious on the bases of creation date',
-                threat_type: 'Young Domain'
-              });
-            }
-
-            // Check for domains expiring soon (<= 30 days)
-            const hasExpiringDomain = cat.results?.some(r => {
-              if (!r.whois) return false;
-              const w = parseWhoisData(r.whois);
-              return w && w.isExpiringSoon;
-            });
-
-            if (hasExpiringDomain) {
-              cat.verdict = 'SUSPICIOUS';
-              if (!Array.isArray(cat.detections)) cat.detections = [];
-              cat.detections.push({
-                engine: 'Heuristics',
-                result: 'Suspicious: Domain expires within 30 days',
-                threat_type: 'Expiring Domain'
-              });
-            }
-          }
-        });
-      }
+      // Apply heuristics to determine the final verdict
+      normalized = decideVerdict(normalized);
 
       setResult(normalized);
       
@@ -427,6 +390,8 @@ function UrlScanner() {
                                           <div style={{ flex: 1, minWidth: '200px' }}>
                                             {w.domain && <div style={{ marginBottom: 6 }}><strong>Domain:</strong> {w.domain}</div>}
                                             {w.registrar && <div style={{ marginBottom: 6 }}><strong>Registrar:</strong> {w.registrar}</div>}
+                                            {w.registrant?.organization && <div style={{ marginBottom: 6 }}><strong>Organization:</strong> {w.registrant.organization}</div>}
+                                            {w.registrant?.country && <div><strong>Country:</strong> {w.registrant.country}</div>}
                                           </div>
                                           <div style={{ flex: 1, minWidth: '200px' }}>
                                             {w.dates.created && <div style={{ marginBottom: 6 }}><strong>Created:</strong> {w.dates.created}</div>}

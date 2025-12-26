@@ -100,6 +100,31 @@ export function calculateDomainAge(creationDate) {
 }
 
 /**
+ * Calculate domain age in days from creation date
+ * @param {string|array} creationDate - Domain creation date
+ * @returns {number|null} Age in days or null
+ */
+export function calculateDomainAgeInDays(creationDate) {
+  if (!creationDate) return null;
+  
+  try {
+    const dateStr = Array.isArray(creationDate) ? creationDate[0] : creationDate;
+    if (!dateStr) return null;
+    
+    const created = new Date(dateStr);
+    if (isNaN(created.getTime())) return null;
+    
+    const now = new Date();
+    const ageMs = now - created;
+    const ageDays = Math.floor(ageMs / (1000 * 60 * 60 * 24));
+    
+    return ageDays;
+  } catch {
+    return null;
+  }
+}
+
+/**
  * Calculate days until domain expiration
  * @param {string|array} expirationDate - Domain expiration date
  * @returns {number|null} Days until expiration or null
@@ -214,6 +239,7 @@ export function parseWhoisData(whois) {
   const normalized = normalizeWhoisFields(whois);
   
   const domainAge = calculateDomainAge(normalized.creation_date);
+  const domainAgeInDays = calculateDomainAgeInDays(normalized.creation_date);
   const daysToExpiry = daysUntilExpiration(normalized.expiration_date);
   
   return {
@@ -225,6 +251,7 @@ export function parseWhoisData(whois) {
       updated: formatWhoisDate(normalized.updated_date),
       expires: formatWhoisDate(normalized.expiration_date),
       age: domainAge,
+      ageInDays: domainAgeInDays,
       daysToExpiry: daysToExpiry
     },
     nameServers: formatNameServers(normalized.name_servers),
