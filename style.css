@@ -1,0 +1,366 @@
+/* RESET */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* BASE */
+html,
+body {
+  width: 100%;
+  min-height: 100%;
+  overflow-x: hidden;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #0f172a;
+  overflow-y: auto;
+}
+
+/* CENTER WRAPPER */
+.page-wrapper {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 20px;
+}
+
+.App {
+  width: 100%;
+  max-width: 1400px;
+}
+
+/* MAIN CARD */
+.scanner-container {
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 36px;
+  box-shadow: 0 20px 45px rgba(2, 6, 23, 0.14);
+  text-align: left;
+}
+
+/* HEADINGS */
+h1 {
+  font-size: 2.1rem;
+  margin-bottom: 24px;
+}
+
+h2 {
+  font-size: 1.3rem;
+  margin-bottom: 16px;
+}
+
+h3 {
+  font-size: 1rem;
+  margin-bottom: 10px;
+  color: #374151;
+}
+
+h4 {
+  font-size: 0.95rem;
+  margin-bottom: 8px;
+  color: #374151;
+}
+
+/* FORM */
+.url-form {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.url-input {
+  flex: 1;
+  padding: 14px 16px;
+  border-radius: 12px;
+  border: 2px solid #eef2f7;
+  font-size: 15px;
+  transition: border-color 0.2s;
+}
+
+.url-input:focus {
+  outline: none;
+  border-color: #667eea;
+}
+
+.scan-button {
+  padding: 12px 18px;
+  border-radius: 12px;
+  border: none;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s, opacity 0.2s;
+}
+
+.scan-button:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.scan-button:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.scan-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ERROR */
+.error {
+  background: #fff1f2;
+  color: #9f1239;
+  padding: 12px;
+  border-radius: 12px;
+  margin-bottom: 16px;
+  text-align: left;
+  border: 1px solid #fecaca;
+}
+
+/* RESULT CARD */
+.result-card {
+  background: #f9fbff;
+  padding: 24px;
+  border-radius: 16px;
+  transition: all 0.3s;
+}
+
+/* GRID */
+.result-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 24px;
+  margin-top: 20px;
+}
+
+.result-grid > div > strong {
+  display: block;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #64748b;
+  margin-bottom: 6px;
+}
+
+/* DETAIL CARD */
+.detail-card {
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.detail-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
+}
+
+/* DIVIDER */
+.section-divider {
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    transparent,
+    #e5e7eb,
+    transparent
+  );
+  margin: 26px 0;
+}
+
+/* SCREENSHOT */
+.screenshot-section {
+  padding: 16px;
+  border-radius: 14px;
+  background: white;
+  border: 1px solid #e5e7eb;
+  margin-top: 16px;
+}
+
+.screenshot-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+  margin-bottom: 10px;
+  transition: opacity 0.2s;
+}
+
+.screenshot-header:hover {
+  opacity: 0.7;
+}
+
+.toggle-text {
+  font-size: 13px;
+  color: #64748b;
+  font-weight: 600;
+}
+
+.screenshot-section img {
+  width: 100%;
+  border-radius: 12px;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.08);
+}
+
+/* HISTORY */
+.history-section {
+  margin-top: 30px;
+}
+
+.history-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 10px;
+  align-items: center;
+}
+
+.history-row button {
+  flex: 1;
+  text-align: left;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.no-history {
+  color: #6b7280;
+  padding: 12px;
+  text-align: center;
+}
+
+/* SCROLLBAR */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .url-form {
+    flex-direction: column;
+  }
+
+  .scanner-container {
+    padding: 22px 16px;
+  }
+
+  h1 {
+    font-size: 1.7rem;
+  }
+
+  h2 {
+    font-size: 1.2rem;
+  }
+
+  .result-grid {
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 12px;
+  }
+
+  .history-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .history-row button {
+    text-align: center;
+  }
+}
+
+/* =========================================================
+   FIX: LONG DOMAIN / IP OVERFLOW (SCREENSHOT ISSUE)
+   ========================================================= */
+.result-grid > div {
+  min-width: 0;                 /* 🔑 critical for CSS grid */
+}
+
+.result-grid > div > div {
+  word-break: break-all;
+  overflow-wrap: anywhere;
+  max-width: 100%;
+}
+
+/* =========================================================
+   NEW SAAS LAYOUT (2-COLUMN)
+   ========================================================= */
+.result-layout {
+  display: grid;
+  grid-template-columns: 2fr 1fr; /* Left: ~66%, Right: ~33% */
+  gap: 24px;
+  align-items: start;
+}
+
+.result-sidebar {
+  position: sticky;
+  top: 20px;
+}
+
+@media (max-width: 900px) {
+  .result-layout {
+    grid-template-columns: 1fr;
+  }
+  
+  .result-sidebar {
+    position: static;
+  }
+}
+
+/* =========================================================
+   COLLAPSIBLE SECTIONS (ACCORDION)
+   ========================================================= */
+.collapsible-section {
+  border-top: 1px solid #e5e7eb;
+}
+
+.collapsible-header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 4px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  border-radius: 8px;
+}
+
+.collapsible-header:hover {
+  background-color: #f8fafc;
+}
+
+.collapsible-content {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.3s ease-out, opacity 0.3s ease-out;
+  opacity: 0;
+}
+
+.collapsible-content.open {
+  grid-template-rows: 1fr;
+  opacity: 1;
+}
+
+.collapsible-inner {
+  overflow: hidden;
+}
+
+.chevron {
+  transition: transform 0.3s ease;
+  color: #94a3b8;
